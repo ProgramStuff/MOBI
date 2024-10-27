@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "*.ejs": "html",
+        "ostream": "cpp",
+        "exception": "cpp",
+        "fstream": "cpp",
+        "stdexcept": "cpp",
+        "*.tcc": "cpp",
+        "new": "cpp"
+    }
+}
