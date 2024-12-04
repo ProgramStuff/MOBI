@@ -3,6 +3,7 @@ package com.example.a5
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.EaseInCirc
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -144,7 +145,7 @@ fun CreateBall(
     index: Int
 ){
     /*
-        Use a mutable lists trigger this function, creating a new ball
+        Use mutable lists trigger this function, creating a new ball
         everytime the state is updated
      */
 
@@ -152,9 +153,23 @@ fun CreateBall(
         Launched effect created a separate thread ensuring each ball can check its positioning
         at the same time
      */
+
+    /*
+        Animatable makes movement smooth, avoiding jittery movements
+         than using infinite transition and
+        animate float.
+     */
+    val xPos = remember { Animatable(x[index]) }
+    val yPos = remember { Animatable(y[index]) }
+
+
     LaunchedEffect(Unit) {
         while (true){
-            // Update the ball positions list
+            // Updating ball position and snapping it to that position
+            xPos.snapTo(xPos.value + xDirections[index])
+            yPos.snapTo(yPos.value + yDirections[index])
+
+            // Storing positions to check for collision with screen edges and other balls
             x[index] += xDirections[index]
             y[index] += yDirections[index]
             ballPositions[index] = Offset(x[index], y[index])
@@ -210,6 +225,6 @@ fun CreateBall(
             color = color,
             radius = size.minDimension / 2,
 
-        )
+            )
     }
 }
